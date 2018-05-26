@@ -1,5 +1,11 @@
 package hybridanalysis
 
+// URL const
+// hybrid-analysis
+const (
+	URL = "https://www.hybrid-analysis.com/feed?json"
+)
+
 // TopLevel struct representation
 // count, status and data analysis array
 type TopLevel struct {
