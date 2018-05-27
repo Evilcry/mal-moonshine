@@ -12,12 +12,18 @@ const (
 	Url = "https://www.hybrid-analysis.com/feed?json"
 )
 
-// UnmarshalTopLevel struct
+// UnmarshalTopLevel ctor
 // HA unmarshaller
 func UnmarshalTopLevel(data []byte) (TopLevel, error) {
 	var r TopLevel
 	err := json.Unmarshal(data, &r)
 	return r, err
+}
+
+// Marshal ctor
+// HA marshaller
+func (r *TopLevel) Marshal() ([]byte, error) {
+	return json.Marshal(r)
 }
 
 // TopLevel struct
@@ -102,7 +108,7 @@ type ExtractedFile struct {
 	AVTotal             *string             `json:"av_total"`
 }
 
-// HostGeo struct
+// HostsGeo struct
 // contains GeoIP information
 type HostsGeo struct {
 	IP  string `json:"ip"`
@@ -130,20 +136,32 @@ type ProcessList struct {
 type EnvironmentDescription string
 
 const (
-	AndroidStaticAnalysis   EnvironmentDescription = "Android Static Analysis"
-	LinuxUbuntu160464Bit    EnvironmentDescription = "Linux (Ubuntu 16.04, 64 bit)"
-	Windows732Bit           EnvironmentDescription = "Windows 7 32 bit"
+	// AndroidStaticAnalysis env
+	AndroidStaticAnalysis EnvironmentDescription = "Android Static Analysis"
+	// LinuxUbuntu160464Bit env
+	LinuxUbuntu160464Bit EnvironmentDescription = "Linux (Ubuntu 16.04, 64 bit)"
+	// Windows732Bit env
+	Windows732Bit EnvironmentDescription = "Windows 7 32 bit"
+	// Windows732BitHWPSupport env
 	Windows732BitHWPSupport EnvironmentDescription = "Windows 7 32 bit (HWP Support)"
-	Windows764Bit           EnvironmentDescription = "Windows 7 64 bit"
+	// Windows764Bit env
+	Windows764Bit EnvironmentDescription = "Windows 7 64 bit"
 )
 
+// EnvironmentID string
+// environment identifier
 type EnvironmentID string
 
 const (
+	// The100 custom env ID
 	The100 EnvironmentID = "100"
+	// The110 custom env ID
 	The110 EnvironmentID = "110"
+	// The120 custom env ID
 	The120 EnvironmentID = "120"
+	// The200 custom env ID
 	The200 EnvironmentID = "200"
+	// The300 custom env ID
 	The300 EnvironmentID = "300"
 )
 
@@ -152,10 +170,14 @@ const (
 type Category string
 
 const (
-	ANetworkTrojanWasDetected          Category = "A Network Trojan was detected"
-	MiscActivity                       Category = "Misc activity"
+	// ANetworkTrojanWasDetected malicious category
+	ANetworkTrojanWasDetected Category = "A Network Trojan was detected"
+	// MiscActivity malicious category
+	MiscActivity Category = "Misc activity"
+	// PotentialCorporatePrivacyViolation malicious category
 	PotentialCorporatePrivacyViolation Category = "Potential Corporate Privacy Violation"
-	PotentiallyBadTraffic              Category = "Potentially Bad Traffic"
+	// PotentiallyBadTraffic malicious category
+	PotentiallyBadTraffic Category = "Potentially Bad Traffic"
 )
 
 // Severity string
@@ -163,8 +185,11 @@ const (
 type Severity string
 
 const (
+	// The1 low severity
 	The1 Severity = "1"
+	// The2 medium severity
 	The2 Severity = "2"
+	// The3 high severity
 	The3 Severity = "3"
 )
 
@@ -173,7 +198,9 @@ const (
 type Protocol string
 
 const (
+	// TCP protocol
 	TCP Protocol = "TCP"
+	// UDP protocol
 	UDP Protocol = "UDP"
 )
 
@@ -182,7 +209,9 @@ const (
 type ThreatlevelReadable string
 
 const (
-	ThreatlevelReadableMalicious        ThreatlevelReadable = "malicious"
+	// ThreatlevelReadableMalicious malicious
+	ThreatlevelReadableMalicious ThreatlevelReadable = "malicious"
+	// ThreatlevelReadableNoSpecificThreat non specific threat
 	ThreatlevelReadableNoSpecificThreat ThreatlevelReadable = "no specific threat"
 )
 
@@ -191,23 +220,40 @@ const (
 type TypeTag string
 
 const (
-	Assembly   TypeTag = "assembly"
-	Data       TypeTag = "data"
-	Doc        TypeTag = "doc"
-	ELF        TypeTag = "elf"
-	Empty      TypeTag = "empty"
-	HTML       TypeTag = "html"
-	Img        TypeTag = "img"
-	Java       TypeTag = "java"
+	// Assembly filetype
+	Assembly TypeTag = "assembly"
+	// Data filetype
+	Data TypeTag = "data"
+	// Doc office file
+	Doc TypeTag = "doc"
+	// ELF linux (INTEL, ARM, MIPS, etc.)
+	ELF TypeTag = "elf"
+	// Empty file
+	Empty TypeTag = "empty"
+	// HTML html file
+	HTML TypeTag = "html"
+	// Img image file
+	Img TypeTag = "img"
+	// Java jar file
+	Java TypeTag = "java"
+	// Javascript js file
 	Javascript TypeTag = "javascript"
-	Lnk        TypeTag = "lnk"
-	Pedll      TypeTag = "pedll"
-	Peexe      TypeTag = "peexe"
-	Rtf        TypeTag = "rtf"
-	Script     TypeTag = "script"
-	Text       TypeTag = "text"
-	The64Bits  TypeTag = "64bits"
-	URL        TypeTag = "url"
+	// Lnk link file
+	Lnk TypeTag = "lnk"
+	// Pedll PE DLL
+	Pedll TypeTag = "pedll"
+	// Peexe PE .exe
+	Peexe TypeTag = "peexe"
+	// Rtf RichTextFormat
+	Rtf TypeTag = "rtf"
+	// Script script file
+	Script TypeTag = "script"
+	// Text file
+	Text TypeTag = "text"
+	// The64Bits 64bit file
+	The64Bits TypeTag = "64bits"
+	// URL url submitted
+	URL TypeTag = "url"
 )
 
 // ThreatlevelHuman string
@@ -215,8 +261,11 @@ const (
 type ThreatlevelHuman string
 
 const (
-	Suspicious                       ThreatlevelHuman = "suspicious"
-	ThreatlevelHumanMalicious        ThreatlevelHuman = "malicious"
+	// Suspicious suspicious
+	Suspicious ThreatlevelHuman = "suspicious"
+	// ThreatlevelHumanMalicious marked as malicious
+	ThreatlevelHumanMalicious ThreatlevelHuman = "malicious"
+	// ThreatlevelHumanNoSpecificThreat cannot define
 	ThreatlevelHumanNoSpecificThreat ThreatlevelHuman = "no specific threat"
 )
 
@@ -237,6 +286,11 @@ func (x *Commandline) UnmarshalJSON(data []byte) error {
 	if object {
 	}
 	return nil
+}
+
+// MarshalJSON Commandline ctor
+func (x *Commandline) MarshalJSON() ([]byte, error) {
+	return marshalUnion(x.Integer, nil, nil, x.String, false, nil, false, nil, false, nil, false, nil, true)
 }
 
 func unmarshalUnion(data []byte, pi **int64, pf **float64, pb **bool, ps **string, haveArray bool, pa interface{}, haveObject bool, pc interface{}, haveMap bool, pm interface{}, haveEnum bool, pe interface{}, nullable bool) (bool, error) {
@@ -319,4 +373,35 @@ func unmarshalUnion(data []byte, pi **int64, pf **float64, pb **bool, ps **strin
 		return false, errors.New("Cannot handle delimiter")
 	}
 	return false, errors.New("Cannot unmarshal union")
+}
+
+func marshalUnion(pi *int64, pf *float64, pb *bool, ps *string, haveArray bool, pa interface{}, haveObject bool, pc interface{}, haveMap bool, pm interface{}, haveEnum bool, pe interface{}, nullable bool) ([]byte, error) {
+	if pi != nil {
+		return json.Marshal(*pi)
+	}
+	if pf != nil {
+		return json.Marshal(*pf)
+	}
+	if pb != nil {
+		return json.Marshal(*pb)
+	}
+	if ps != nil {
+		return json.Marshal(*ps)
+	}
+	if haveArray {
+		return json.Marshal(pa)
+	}
+	if haveObject {
+		return json.Marshal(pc)
+	}
+	if haveMap {
+		return json.Marshal(pm)
+	}
+	if haveEnum {
+		return json.Marshal(pe)
+	}
+	if nullable {
+		return json.Marshal(nil)
+	}
+	return nil, errors.New("Union must not be null")
 }

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -10,6 +11,10 @@ import (
 )
 
 func main() {
+	// Temporary, better shape to be given
+	exts := flag.String("exts", "", "list of comma separated file extensions: .exe,.dll")
+	flag.Parse()
+
 	log.Println("Mal-Moonshine fetching started...")
 
 	TopLevelEntry := hybridanalysis.TopLevel{}
@@ -20,11 +25,14 @@ func main() {
 		os.Exit(1)
 	}
 
-	if TopLevelEntry.Status != "ok" {
-		log.Fatal("HA: status KO")
+	if TopLevelEntry.Status != "ok" || TopLevelEntry.Count == 0 {
+		log.Fatal("HA: status KO or no data to fetch")
 		os.Exit(1)
 	}
-
 	fmt.Println("Item Count:", TopLevelEntry.Count)
+
+	fltData := hybridanalysis.Submitname(TopLevelEntry.Data, *exts)
+	hybridanalysis.ShowFiltered(&fltData)
+
 	log.Println("Fetching Completed")
 }
