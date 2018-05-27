@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/evilcry/mal-moonshine/hybridanalysis"
 	"github.com/evilcry/mal-moonshine/utils"
@@ -13,15 +14,15 @@ func main() {
 
 	TopLevelEntry := hybridanalysis.TopLevel{}
 
-	err := utils.FetchJSON(hybridanalysis.URL, &TopLevelEntry)
+	err := utils.FetchJSON(hybridanalysis.Url, &TopLevelEntry)
 	if err != nil {
 		log.Fatal(err)
-		return
+		os.Exit(1)
 	}
 
 	if TopLevelEntry.Status != "ok" {
 		log.Fatal("HA: status KO")
-		return
+		os.Exit(1)
 	}
 
 	fmt.Println("Item Count:", TopLevelEntry.Count)

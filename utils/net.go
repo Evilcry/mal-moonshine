@@ -11,7 +11,7 @@ import (
 // FetchJSON function
 // generic JSON unmarshaller
 func FetchJSON(url string, target interface{}) error {
-	client := &http.Client{Timeout: 5 * time.Second}
+	client := &http.Client{Timeout: 10 * time.Second}
 	var getData []byte
 
 	req, err := http.NewRequest(http.MethodGet, url, bytes.NewReader(getData))
