@@ -3,8 +3,11 @@ package utils
 // Options struct
 // contains arguments passed by the user
 type Options struct {
-	Extensions string
-	Processes  string
-	Cmdlines   string
-	Output     string
+	FileExtensions *string
+	Processes      *string
+	Cmdline        *string
+	VxName         *string
+	Tags           *string
+	Type           *string
+	Output         *string
 }

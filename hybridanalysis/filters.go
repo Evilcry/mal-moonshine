@@ -14,15 +14,38 @@ type FltDatum struct {
 	Data  []Datum
 }
 
-// Submitname function
+// FilterFunnel function
+// gathers all specified options and applies filters
+func FilterFunnel(data []Datum, opts *utils.Options) *FltDatum {
+	flt := FltSubmitname(data, *opts.FileExtensions)
+	flt = FltVxname(flt.Data, *opts.VxName)
+	return &flt
+}
+
+// FltVxname function
+// VxFamily filter
+func FltVxname(data []Datum, vx string) FltDatum {
+	flt := FltDatum{}
+	if vx != "" {
+		for _, elem := range data {
+			if (elem.Vxfamily != nil) && (*elem.Vxfamily == vx) {
+				flt.Data = append(flt.Data, elem)
+			}
+		}
+	} else {
+		flt.Data = data
+	}
+	return flt
+}
+
+// FltSubmitname function
 // filter by file extension, accepted: nil (all entries) or more comma separated exts
-func Submitname(data []Datum, exts string) FltDatum {
+func FltSubmitname(data []Datum, exts string) FltDatum {
 	ext := strings.Split(exts, ",")
 	fltDatum := FltDatum{}
 	for _, elem := range data {
 		if elem.Submitname != nil {
 			if utils.ContainsAnyof(*elem.Submitname, ext) {
-				fltDatum.Count++
 				fltDatum.Data = append(fltDatum.Data, elem)
 			}
 		}

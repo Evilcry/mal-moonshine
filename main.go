@@ -10,12 +10,24 @@ import (
 	"github.com/evilcry/mal-moonshine/utils"
 )
 
-func main() {
-	// Temporary, better shape to be given
-	exts := flag.String("exts", "", "list of comma separated file extensions: .exe,.dll")
+func args() *utils.Options {
+	opts := utils.Options{}
+	opts.FileExtensions = flag.String("exts", "", "list of comma separated file extensions: .exe,.dll")
+	opts.VxName = flag.String("vx", "", "VxName")
+	// TBI
+	opts.Processes = flag.String("procs", "", "list of comma separated spawned processes")
+	// TBI
+	opts.Cmdline = flag.String("cmd", "", "specify CommandLine content, es: certutil -urlcache -split")
+	// TBI
+	opts.Output = flag.String("out", "", "dump JSON to file")
 	flag.Parse()
 
+	return &opts
+}
+
+func main() {
 	log.Println("Mal-Moonshine fetching started...")
+	opts := args()
 
 	TopLevelEntry := hybridanalysis.TopLevel{}
 
@@ -31,8 +43,8 @@ func main() {
 	}
 	fmt.Println("Item Count:", TopLevelEntry.Count)
 
-	fltData := hybridanalysis.Submitname(TopLevelEntry.Data, *exts)
-	hybridanalysis.ShowFiltered(&fltData)
+	fltData := hybridanalysis.FilterFunnel(TopLevelEntry.Data, opts)
+	hybridanalysis.ShowFiltered(fltData)
 
 	log.Println("Fetching Completed")
 }
