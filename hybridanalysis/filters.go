@@ -14,43 +14,45 @@ type FltDatum struct {
 	Data  []Datum
 }
 
-// FilterFunnel function
-// gathers all specified options and applies filters
+// FilterFunnel func
+// all filtering logic
 func FilterFunnel(data []Datum, opts *utils.Options) *FltDatum {
-	flt := FltSubmitname(data, *opts.FileExtensions)
-	flt = FltVxname(flt.Data, *opts.VxName)
+	flt := FltDatum{}
+	for _, elem := range data {
+		if !FltSubmitname(elem.Submitname, opts.FileExtensions) {
+			continue
+		}
+		if !FltVxfamily(elem.Vxfamily, *opts.VxName) {
+			continue
+		}
+
+		flt.Count++
+		flt.Data = append(flt.Data, elem)
+	}
 	return &flt
 }
 
-// FltVxname function
-// VxFamily filter
-func FltVxname(data []Datum, vx string) FltDatum {
-	flt := FltDatum{}
-	if vx != "" {
-		for _, elem := range data {
-			if (elem.Vxfamily != nil) && (*elem.Vxfamily == vx) {
-				flt.Data = append(flt.Data, elem)
-			}
+// FltSubmitname func
+// submitname filter
+func FltSubmitname(submitName, fileExts *string) bool {
+	exts := strings.Split(*fileExts, ",")
+	if submitName != nil {
+		if utils.ContainsAnyof(*submitName, exts) {
+			return true
 		}
-	} else {
-		flt.Data = data
 	}
-	return flt
+	return false
 }
 
-// FltSubmitname function
-// filter by file extension, accepted: nil (all entries) or more comma separated exts
-func FltSubmitname(data []Datum, exts string) FltDatum {
-	ext := strings.Split(exts, ",")
-	fltDatum := FltDatum{}
-	for _, elem := range data {
-		if elem.Submitname != nil {
-			if utils.ContainsAnyof(*elem.Submitname, ext) {
-				fltDatum.Data = append(fltDatum.Data, elem)
-			}
+// FltVxfamily func
+// vxfamily filter
+func FltVxfamily(vxFamily *string, vxString string) bool {
+	if vxFamily != nil {
+		if (*vxFamily == vxString) || (vxString == "") {
+			return true
 		}
 	}
-	return fltDatum
+	return false
 }
 
 // ShowFiltered function
