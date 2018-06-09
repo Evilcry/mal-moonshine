@@ -4,6 +4,7 @@ package utils
 // contains arguments passed by the user
 type Options struct {
 	FileExtensions *string
+	FileType       *string
 	Processes      *string
 	Cmdline        *string
 	VxName         *string

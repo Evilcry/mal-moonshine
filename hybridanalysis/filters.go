@@ -25,11 +25,23 @@ func FilterFunnel(data []Datum, opts *utils.Options) *FltDatum {
 		if !FltVxfamily(elem.Vxfamily, *opts.VxName) {
 			continue
 		}
+		if !FltProcesses(elem.ProcessList, opts) {
+			continue
+		}
 
 		flt.Count++
 		flt.Data = append(flt.Data, elem)
 	}
 	return &flt
+}
+
+// FltProcesses function
+// filter ProcessNames and/or CommandLine
+func FltProcesses(processList []ProcessList, opts *utils.Options) bool {
+	// TBI
+	// procList := strings.Split(*opts.Processes, ",")
+	// cmdLine := *opts.Cmdline
+	return true
 }
 
 // FltSubmitname func
@@ -47,17 +59,20 @@ func FltSubmitname(submitName, fileExts *string) bool {
 // FltVxfamily func
 // vxfamily filter
 func FltVxfamily(vxFamily *string, vxString string) bool {
-	if vxFamily != nil {
-		if (*vxFamily == vxString) || (vxString == "") {
-			return true
+	if vxString == "" {
+		return true
+	} else if vxFamily != nil {
+		if *vxFamily != vxString {
+			return false
 		}
 	}
-	return false
+	return true
 }
 
 // ShowFiltered function
 // shows filtered results
 func ShowFiltered(flt *FltDatum) {
+	fmt.Println("Filtered:", flt.Count)
 	for _, elem := range flt.Data {
 		fmt.Println("Submitname:", *elem.Submitname)
 		fmt.Println("SHA256:", elem.Sha256)
