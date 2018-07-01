@@ -28,6 +28,9 @@ func FilterFunnel(data []Datum, opts *utils.Options) *FltDatum {
 		if !FltProcesses(elem.ProcessList, opts) {
 			continue
 		}
+		if !FltFileType(elem.Type, opts) {
+			continue
+		}
 
 		flt.Count++
 		flt.Data = append(flt.Data, elem)
@@ -36,12 +39,29 @@ func FilterFunnel(data []Datum, opts *utils.Options) *FltDatum {
 }
 
 // FltProcesses function
-// filter ProcessNames and/or CommandLine
+// filter ProcessNames
 func FltProcesses(processList []ProcessList, opts *utils.Options) bool {
-	// TBI
-	// procList := strings.Split(*opts.Processes, ",")
-	// cmdLine := *opts.Cmdline
-	return true
+	if opts.Processes != nil {
+		procList := strings.Split(*opts.Processes, ",")
+		for _, elem := range processList {
+			if utils.ContainsAnyof(elem.Name, procList) {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+// FltFileType function
+// filter for type of file
+func FltFileType(typeFile *string, opts *utils.Options) bool {
+	if opts.FileType != nil && typeFile != nil {
+		typeList := strings.Split(*opts.FileType, ",")
+		if utils.ContainsAnyof(*typeFile, typeList) {
+			return true
+		}
+	}
+	return false
 }
 
 // FltSubmitname func
